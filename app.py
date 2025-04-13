@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import time
 import random
+import os  # Add this line
 
 app = Flask(__name__)
 
@@ -10,7 +11,7 @@ def receive_data():
     data = request.get_json()
     print("Received Data:", data)
 
-    current = random.uniform(0.1, 0.2)  # 100-200mA
+    current = random.uniform(0.1, 0.2)
     voltage = 3.3
     energy = voltage * current * 0.1
 
@@ -30,3 +31,7 @@ def receive_data():
     }
 
     return jsonify(response)
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))  # <- NEW: use PORT from environment
+    app.run(host="0.0.0.0", port=port)
